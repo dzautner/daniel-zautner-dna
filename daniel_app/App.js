@@ -18,18 +18,27 @@ export default class App extends React.Component {
   }
 
   _onSwipe = (card) => {
-    this.setState({
-      card,
-      match: true,
-    });
+    if (Math.random() > 0.5) {
+      this.setState({
+        card,
+        match: true,
+      });
+    }
     console.log('swiped yep', card);
   };
+
+  _onAcceptFate = () => {
+    this.setState({
+      card: null,
+      match: false,
+    });
+  }
 
   render() {
     return (
       <View style={styles.container}>
         {this.state.match && (
-          <ItsAMatch card={this.state.card} />
+          <ItsAMatch card={this.state.card} onPress={this._onAcceptFate} />
         )}
         <Header title="Daniel" />
         <SwipeCards handleYup={this._onSwipe} style={{ flex: 1 }} />

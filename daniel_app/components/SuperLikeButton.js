@@ -14,9 +14,9 @@ import {
 
 export default function SuperLikeButton(props) {
   return (
-    <TouchableOpacity onPress={props.onPress}>
-      <View style={styles.container}>
-        <Text style={styles.label}>Super Like</Text>
+    <TouchableOpacity onPress={props.onPress} style={styles.container}>
+      <View style={styles.button}>
+        <Text style={styles.label}>{props.title}</Text>
       </View>
     </TouchableOpacity>
   );
@@ -24,6 +24,11 @@ export default function SuperLikeButton(props) {
 
 const styles = StyleSheet.create({
   container: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingTop: 32,
+  },
+  button: {
     borderRadius: 16,
     backgroundColor: '#0066CC',
     padding: 16,

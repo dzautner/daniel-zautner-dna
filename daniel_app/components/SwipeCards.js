@@ -12,8 +12,10 @@ import SwipeCards from 'react-native-swipe-cards';
 import DanielImage from 'DanielImage';
 import YupComponent from 'YupComponent';
 
-import curly from '../static/curly.png';
-import straight from '../static/straight.png';
+const curly = 'https://bengsfort.github.io/unity-ads-showcase/images/daniel/curly.png?=' + Date.now();
+const straight = 'https://bengsfort.github.io/unity-ads-showcase/images/daniel/straight.png?=' + Date.now();
+Image.prefetch(curly);
+Image.prefetch(straight);
 
 class Card extends React.Component {
   constructor(props) {
@@ -23,7 +25,7 @@ class Card extends React.Component {
   render() {
     return (
       <View>
-        <DanielImage source={this.props.image} />
+        <DanielImage source={{ uri: this.props.image }} />
       </View>
     )
   }

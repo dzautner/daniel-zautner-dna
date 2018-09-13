@@ -11,23 +11,47 @@ import {
   Image,
   StyleSheet,
 } from 'react-native';
+import { Camera, Permissions } from 'expo';
+import SuperLikeButton from 'SuperLikeButton';
 
-export default function ItsAMatch(props) {
-  return (
-    <View style={styles.container}>
-      <View>
-        <Text style={styles.label}>It's a match!</Text>
-        <View style={styles.imageContainer}>
-          <View style={styles.imageWrapper}>
-            <Image style={styles.image} source={props.card.image} />
+const itsamatch = 'https://bengsfort.github.io/unity-ads-showcase/images/daniel/itsamatch.png?=' + Date.now();
+Image.prefetch(itsamatch);
+
+export default class ItsAMatch extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      hasCameraPermission: false,
+      cameraType: Camera.Constants.Type.front,
+    };
+  }
+
+  async componentDidMount() {
+    const { status } = await Permissions.askAsync(Permissions.CAMERA);
+    this.setState({ hasCameraPermission: status === 'granted' });
+  }
+
+  render() {
+    const { hasCameraPermission, cameraType } = this.state;
+    return (
+      <View style={styles.container}>
+        <View>
+          <Image style={styles.matchImage} source={{ uri: itsamatch }} resizeMode="contain" />
+          <View style={styles.imageContainer}>
+            {hasCameraPermission && (
+              <View style={styles.imageWrapper}>
+                <Camera style={styles.image} type={cameraType} />
+              </View>
+            )}
+            <View style={styles.imageWrapper}>
+              <Image style={styles.image} source={{ uri: this.props.card.image }} />
+            </View>
           </View>
-          <View style={styles.imageWrapper}>
-            <Image style={styles.image} source={props.card.image} />
-          </View>
+          <SuperLikeButton title="Hell yeah" onPress={this.props.onPress} />
         </View>
       </View>
-    </View>
-  );
+    );
+  }
 }
 
 const styles = StyleSheet.create({
@@ -42,8 +66,8 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(255, 255, 255, 0.7)',
     zIndex: 1000,
   },
-  label: {
-    fontSize: 48,
+  matchImage: {
+    height: 80,
   },
   imageContainer: {
     flexDirection: 'row',
@@ -62,6 +86,7 @@ const styles = StyleSheet.create({
     },
     shadowRadius: 10,
     shadowOpacity: 0.2,
+    overflow: 'hidden',
   },
   image: {
     width: 84,
